@@ -1,0 +1,62 @@
+//判断一个链表是否为回文结构 
+//【题目】 给定一个链表的头节点head，请判断该链表是否为回 文结构。 
+//例如： 1->2->1，返回true。 1->2->2->1，返回true。 15->6->15，返回true。 1->2->3，返回false。
+//进阶： 如果链表长度为N，时间复杂度达到O(N)，额外空间复杂 度达到O(1)
+#include<iostream>
+#include<stdlib.h>
+#include<stack>
+using namespace std;
+
+class node
+{
+public:
+	int value;
+	node *next;
+	node(int data)
+	{
+		this->value = data;
+	}
+};
+
+bool isPalindrome(node *head);
+
+int main()
+{
+	node *head = new node(1);
+	head->next = new node(4);
+	head->next->next = new node(5);
+	head->next->next->next = new node(4);
+	head->next->next->next->next = new node(1);
+	if (isPalindrome(head))
+		cout << "yes" << endl;
+	else
+		cout << "no" << endl;
+	system("pause");
+	return 0;
+}
+
+bool isPalindrome(node *head)
+{
+	node *head0 = head;
+	stack<int> listStack;
+	while (head0 != NULL)
+	{
+		listStack.push(head0->value);
+		head0 = head0->next;
+	}
+	while (head != NULL)
+	{
+		if (listStack.top() != head->value)
+			return false;
+		head = head->next;
+		listStack.pop();
+	}
+	return true;
+}
+//这是用栈的结构,额外空间复杂度为O(N),要想实现额外空间复杂度为O(1)的
+//需要使用两个指针,一个快指针一个慢指针,快的一次走两步,慢的一次走一步
+//当快指针走到底时,慢指针刚好走到链表的中点位置,这时候将中点的next改为NULL
+//然后把后半部分的链表反转,最后一个为头指针,中点为尾指针,这样一个从头开始
+//一个从尾开始,进行遍历,当蛤发现不一样的时候返回false,若是知道头指针指到NULL
+//这期间都相等的话返回True.
+//注意,在返回之前记得把链表给恢复了!
